@@ -13,7 +13,7 @@ import {
 
 interface VerficationEmailProps{
     username: string,
-    otp: number
+    otp: string
 }
 
 export default function VerficationEmail({username,otp}:VerficationEmailProps) {
