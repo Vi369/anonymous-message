@@ -1,8 +1,7 @@
-import {resend} from '@/lib/resend'
 import VerficationEmail from '../../emails/VerificationEmail'
-
 import { ApiResponce } from '@/types/ApiResponse'
 
+import { resend } from '@/lib/resend'
 
 export async function sendVerificationEmail(
     email: string,
@@ -20,7 +19,6 @@ export async function sendVerificationEmail(
 
         return {success: true, message: "Successfully send verification Email"}
     } catch (emailError) {
-        console.error("Error sending Verification Eamil", emailError)
         return {success: false, message: "Failed to send verification Email"}
     }
 
