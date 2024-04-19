@@ -7,11 +7,13 @@ function EasyResponse(
     isAccesptingMessages?:boolean,
     messages?: Array<Message>
 ){
-    return{
+    const obj = {
         success: success,
-        message: message,
-        data: data,
-        isAccesptingMessages:isAccesptingMessages,
-        messages: messages
+        message: message
     }
+    if(data){
+        obj.data = data
+    }
+    
 }
+
