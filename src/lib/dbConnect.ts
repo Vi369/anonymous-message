@@ -15,9 +15,7 @@ async function connentDb():Promise<void> {
     try {
         const db = await mongoose.connect(process.env.NEXT_PUBLIC_MONGODB_URI || '', {})
         connection.isConnected = db.connections[0].readyState
-
-        // console.log("ready state:",db.connections[0].readyState)
-
+        
         console.log("Db connected successfully")
 
     } catch (error) {
