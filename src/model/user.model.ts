@@ -1,22 +1,6 @@
 import mongoose, {Schema, Document} from 'mongoose'
+import { Message, MessageSchema } from '@/model/message.model'
 
-
-export interface Message extends Document{
-    Content: string;
-    createdAt: Date;
-}
-
-const MessageSchema:Schema<Message> = new Schema({
-    Content:{
-        type:String,
-        required: true,
-    },
-    createdAt:{
-        type: Date,
-        requird: true,
-        default: Date.now // little confusion TODO: 
-    }
-},{timestamps: true})
 
 export interface User extends Document{
     username: string,
