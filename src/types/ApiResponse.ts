@@ -1,6 +1,6 @@
 import { Message } from '@/model/message.model'
 
-export interface ApiResponce{
+export interface ApiResponse{
     success: boolean,
     message: string,
     isAccesptingMessages?:boolean,
