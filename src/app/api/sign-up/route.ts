@@ -2,6 +2,8 @@ import connentDb from "@/lib/dbConnect";
 import UserModel from "@/model/user.model";
 import bcrypt from 'bcryptjs'
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
+import { ResponseObj } from "@/helpers/ResponseObj";
+
 
 export async function POST(request:Request) {
     await connentDb()
@@ -15,10 +17,8 @@ export async function POST(request:Request) {
         })
     
         if(existingVerifiedUserByUsername){
-            return Response.json({
-                success: false,
-                message: "This Username already exist"
-            },
+            return Response.json(
+                new ResponseObj(false, "This Username already exist"),
             {
                 status: 400
             })
