@@ -2,7 +2,6 @@ import connentDb from "@/lib/dbConnect";
 import UserModel from "@/model/user.model";
 import bcrypt from 'bcryptjs'
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
-import { Fascinate } from "next/font/google";
 
 export async function POST(request:Request) {
     await connentDb()
