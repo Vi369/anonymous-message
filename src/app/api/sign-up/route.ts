@@ -33,10 +33,7 @@ export async function POST(request:Request) {
 
         if(existingUserByEmail){
             if(existingUserByEmail.isVerified){
-                return Response.json({
-                    success: false,
-                    message: "Email already exist"
-                },
+                return Response.json(new ResponseObj(false,"Email already exist"),
                 {
                     status: 400
                 })
@@ -78,28 +75,19 @@ export async function POST(request:Request) {
         console.log("verification send email response",emailResponse)
 
         if(!emailResponse){
-            return Response.json({
-                success: false,
-                message: emailResponse.message
-            },
+            return Response.json( new ResponseObj(false, emailResponse.message),
             {
                 status: 500
             })
         }
-        return Response.json({
-            success: true,
-            message: "User Register successfully but not verfied!"
-        },
+        return Response.json( new ResponseObj(true, "User Register successfully but not verfied!"),
         {
             status: 201
         })
 
     } catch (error) {
         console.error("Error during Registuring user", error)
-        return Response.json({
-            success: false,
-            message: "Registration Failed"
-        },
+        return Response.json( new ResponseObj(false, "Registration Failed"),
         {
             status: 500
         })
