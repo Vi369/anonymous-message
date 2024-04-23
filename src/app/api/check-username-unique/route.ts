@@ -2,6 +2,7 @@ import connentDb from "@/lib/dbConnect";
 import UserModel from "@/model/user.model";
 import {z} from 'zod'
 import { usernameValidation } from '@/schemas/signUpSchema'
+import { ResponseObj } from "@/helpers/ResponseObj";
 
 
 // query check schema
@@ -20,7 +21,7 @@ export async function GET(request:Request) {
         }
         // validate with zod
         const result = UsernameQuerySchema.safeParse(queryParam)
-        console.log("result log:", result) // TODO: console see 
+         
 
         if(!result.success){
             const usernameError = result.error.format().username?._errors || []
@@ -50,19 +51,14 @@ export async function GET(request:Request) {
             })
         }
 
-        return Response.json({
-            success: true,
-            message: "Username is Available"
-        },
-        {
-            status: 200
-        })
+        return Response.json(
+            new ResponseObj(true, "Username is Available"),
+            {status: 200}
+        )
     } catch (error) {
         console.error("Error checking username", error)
-        return Response.json({
-            success: false,
-            message: "Error during checking username"
-        },
+        return Response.json(
+            new ResponseObj(false, "Error checking username"),
         {
             status: 500
         })
