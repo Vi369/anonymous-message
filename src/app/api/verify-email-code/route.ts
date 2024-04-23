@@ -2,19 +2,11 @@ import connentDb from "@/lib/dbConnect";
 import UserModel from "@/model/user.model";
 import {z} from 'zod'
 import { verifySchema } from '@/schemas/verifySchema'
-import { usernameValidation } from '@/schemas/signUpSchema'
-
-// TODO: zod code validation improve flow and create helpers mothod for success and error response
-
+import { ResponseObj } from "@/helpers/ResponseObj";
 
 // check email code schema 
 const verifyEmailCodeSchema = z.object({
-    verifyCode: verifySchema
-})
-
-// check username schema
-const UsernameQuerySchema = z.object({
-    username: usernameValidation
+    code: verifySchema
 })
 
 export async function POST(request:Request) {
@@ -22,47 +14,53 @@ export async function POST(request:Request) {
 
     try {
         const {username, code} = await request.json()
-        const decodedUsername = decodeURIComponent(username)
-        console.log("to see how look decodedusername",)
+        // const decodedUsername = decodeURIComponent(username)
+
+        // code validation
+        const result = verifyEmailCodeSchema.safeParse({code});
+
+        if(!result.success){
+            return Response.json({
+                success: false,
+                message: result.error.format().code?._errors
+            },{status: 400})
+        }
+
+        // validated Code 
+        const validatedCode = result.data.code
+
         const user = await UserModel.findOne({
-            username: decodedUsername
+            username
         })
 
         if(!user){
-            return Response.json({
-                success: false,
-                message: "User not Found"
-            },
+            return Response.json(new ResponseObj(false, "User Not Found"),
             {
                 status: 400
             })
         }
 
-        const isCodevalid = user.verifiedCode === code;
+        const isCodevalid = user.verifiedCode === validatedCode;
+
+        if(isCodevalid){
+            return Response.json( 
+                new ResponseObj(false, "Verification code is Incorrect"),
+                {status: 400}
+            )
+        }
 
         const isVerifycodeNotExpire = new Date(user.verifedCodeExpiry) > new Date()
 
-        if(isCodevalid && isVerifycodeNotExpire){
+        if(isVerifycodeNotExpire){
             user.isVerified = true
             await user.save()
-            return Response.json({
-                message: "User Email Verified Successfully!",
-                success: true
-            },
-            {
-                status: 200
-            })
-        }else if(!isVerifycodeNotExpire){
-            return Response.json({
-                message: "Verification code has expired.Please sign-up Again",
-                success: false
-            },
-            {
-                status: 400
-            })
+            return Response.json(
+                new ResponseObj(true, "User Email Verified Successfully!"),
+                {status: 200}
+            )
         }else{
             return Response.json({
-                message: "Verification code is Incorrect",
+                message: "Verification code has expired.Please sign-up Again",
                 success: false
             },
             {
