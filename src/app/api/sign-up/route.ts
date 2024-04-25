@@ -10,7 +10,6 @@ export async function POST(request:Request) {
 
     try {
         const {username, email, Password} = await request.json()
-        console.log(username, email, Password)
         // checking if username already taken
         const existingVerifiedUserByUsername = await UserModel.findOne({
             username,
@@ -72,8 +71,6 @@ export async function POST(request:Request) {
 
         // sending verification email
         const emailResponse:any = await sendVerificationEmail(email,username,verifyCode)
-        //TODO: see what in response
-        console.log("verification send email response",emailResponse)
 
         if(!emailResponse){
             return Response.json( new ResponseObj(false, emailResponse.message),
