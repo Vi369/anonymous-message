@@ -9,7 +9,8 @@ export async function POST(request:Request) {
     await connentDb()
 
     try {
-        const {username, email, password} = await request.json()
+        const {username, email, Password} = await request.json()
+        console.log(username, email, Password)
         // checking if username already taken
         const existingVerifiedUserByUsername = await UserModel.findOne({
             username,
@@ -39,7 +40,7 @@ export async function POST(request:Request) {
                 })
             }else{
                 // update user details and save  
-                const hashedPassword = await bcrypt.hash(password,10)
+                const hashedPassword = await bcrypt.hash(Password,10)
 
                 existingUserByEmail.password = hashedPassword;
                 existingUserByEmail.verifiedCode = verifyCode;
@@ -50,7 +51,7 @@ export async function POST(request:Request) {
             }
         }else{
             // hashed user password
-            const hashedPassword = await bcrypt.hash(password,10)
+            const hashedPassword = await bcrypt.hash(Password,10)
             // verified code expiry 
             const expiryDate = new Date()
             expiryDate.setHours(expiryDate.getHours()+1);
