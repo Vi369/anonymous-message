@@ -43,9 +43,6 @@ function page() {
                 setUsernameMessage('')
                 try {
                     const response = await axios.get<ApiResponse>(`/api/check-username-unique?username=${username}`)
-                    // TODO: 
-                    console.log("username uniqueness checking response:",response)
-                    console.log("message res:", response.data.message)
                     setUsernameMessage(response.data.message);
                 } catch (error) {
                     const axiosError = error as AxiosError<ApiResponse>
@@ -65,15 +62,12 @@ function page() {
     const onSubmitHandler = async(data: z.infer<typeof signUpSchema>)=>{
         try {
             const res = await axios.post(`/api/sign-up`,data);
-            console.log("sing-up response:", res)
-            // TODO: success check according to message
-            console.log("signup success checking:",res.data.success)
             if(res.data.success){
                 toast({
                     description: res.data.message,
                 })
                 // redirect to verify page
-                router.push(`/verify-email${username}`)
+                router.push(`/verify-email/${username}`)
             }else{
                 toast({
                     description: res.data.message,
