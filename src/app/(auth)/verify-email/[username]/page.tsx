@@ -29,7 +29,7 @@ function verifyEmail() {
             console.log("params username and code",params.username,data.code)
             const response = await axios.post('/api/verify-email-code',{
                 username: params.username,
-                code: data
+                code: data.code
             })
             // TODO: 
             console.log("verify response:", response)

@@ -1,7 +1,7 @@
 import connentDb from "@/lib/dbConnect";
 import UserModel from "@/model/user.model";
-import {z} from 'zod'
-import { verifySchema } from '@/schemas/verifySchema'
+// import {z} from 'zod'
+// import { verifySchema } from '@/schemas/verifySchema'
 import { ResponseObj } from "@/helpers/ResponseObj";
 
 // check email code schema 
