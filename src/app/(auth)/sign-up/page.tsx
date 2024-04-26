@@ -13,7 +13,7 @@ import { ApiResponse } from "@/types/ApiResponse"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { LoaderCircle } from "lucide-react"
+import { Loader} from "lucide-react"
 
 
 function page() {
@@ -117,7 +117,7 @@ function page() {
                                     }}
                                     />
                                 </FormControl>
-                                    {checkingUserNameUnique && <LoaderCircle className="mr-2 h-4 w-4 animate-spin"/>}
+                                    {checkingUserNameUnique && <Loader className="mr-2 h-4 w-4 animate-spin"/>}
                                 <FormDescription>
                                     {!usernameMessage ? ('Username min 5 characters long and not include special characters.'):(<p className={`${usernameMessage==='Username is Available'? ('text-green-500'):('text-red-500')}`}>{usernameMessage}</p>)}    
                                 </FormDescription>
@@ -161,7 +161,7 @@ function page() {
                         {
                         isFormSubmitting ? 
                         (<>
-                            <LoaderCircle className="mr-2 h-4 w-4 animate-spin"/>Please wait...
+                            <Loader className="mr-2 h-4 w-4 animate-spin"/>Please wait...
                         </>):('Sign-up')
                         }
                      </Button>
