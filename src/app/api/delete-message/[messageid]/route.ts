@@ -2,10 +2,12 @@ import { ResponseObj } from "@/helpers/ResponseObj";
 import UserModel from "@/model/user.model";
 import { User, getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/options";
+import connentDb from "@/lib/dbConnect";
 
 export async function DELETE(request:Request,{params}:{params:{messageid:string}}) {
     const messageId = params.messageid;
     try {
+        await connentDb();
         const session = await getServerSession(authOptions);
         const user:User = session?.user
         // TODO: console session or user to check details 
