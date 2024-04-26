@@ -60,6 +60,7 @@ function page() {
 
     // on form submit
     const onSubmitHandler = async(data: z.infer<typeof signUpSchema>)=>{
+        setIsFormSubmitting(true)
         try {
             const res = await axios.post(`/api/sign-up`,data);
             if(res.data.success){
