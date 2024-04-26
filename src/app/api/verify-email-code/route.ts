@@ -15,8 +15,8 @@ export async function POST(request:Request) {
     try {
         const {username, code} = await request.json()
         console.log("username and code", username,code)
-        const decodedUsername = decodeURIComponent(username)
-        console.log(decodedUsername)
+        // const decodedUsername = decodeURIComponent(username)
+        // console.log(decodedUsername)
 
         // // code validation
         // const result = verifyEmailCodeSchema.safeParse({code});
@@ -32,7 +32,7 @@ export async function POST(request:Request) {
         // const validatedCode = result.data.code.code
 
         const user = await UserModel.findOne({
-            username:decodedUsername
+            username,
         })
 
         if(!user){
