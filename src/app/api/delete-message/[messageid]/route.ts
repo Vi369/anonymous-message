@@ -21,7 +21,7 @@ export async function DELETE(request:Request,{params}:{params:{messageid:string}
         }
         const updatedUserMessagesArray = await UserModel.updateOne(
             {_id: user._id},
-            {$pull:{_id: messageId}}
+            {$pull:{messages: {_id: messageId}}}
         )
         // TODO: console 
         console.log("delete message response", updatedUserMessagesArray)
