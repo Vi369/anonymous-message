@@ -25,11 +25,11 @@ export async function POST(request:Request) {
 
     const userId = user._id
     console.log("user id ", userId)
-    const { acceptMessage } = await request.json();
+    const { acceptMessages } = await request.json();
 
     try{
         const updatedUser = await UserModel.findByIdAndUpdate(userId,
-            {isAcceptingMessage: acceptMessage},
+            {isAcceptingMessage: acceptMessages},
             {new:true}
         )
 
@@ -41,7 +41,7 @@ export async function POST(request:Request) {
         }
 
         return Response.json(
-            new ResponseObj(true, "Accept messages status togle successfully!",updatedUser),
+            new ResponseObj(true, "Accept messages status toggle successfully!",updatedUser),
             {status: 200}
         )
 
