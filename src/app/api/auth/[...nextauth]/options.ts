@@ -10,11 +10,12 @@ export const authOptions : NextAuthOptions = {
             id: "Credentials",
             name: "Credentials",
             credentials:{
-                username: { label: "Email", type: "text", placeholder: "Enter Your email" },
+                username: { label: "Email", type: "email", placeholder: "Enter Your email" },
                 password: { label: "Password", type: "password" }
             },
             async authorize(Credentials:any):Promise<any> {
                 await connentDb()
+                console.log("username or password", Credentials.identifier.email,Credentials.identifier.username)
                 try {
                     const user = await UserModel.findOne({
                         $or:[
