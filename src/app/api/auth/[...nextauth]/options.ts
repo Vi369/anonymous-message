@@ -7,20 +7,24 @@ import UserModel from "@/model/user.model";
 export const authOptions : NextAuthOptions = {
     providers:[
         CredentialsProvider({
-            id: "Credentials",
-            name: "Credentials",
+            id: "credentials",
+            name: "credentials",
             credentials:{
-                username: { label: "Email", type: "email", placeholder: "Enter Your email" },
-                password: { label: "Password", type: "password" }
+                username: { label: "Username" },
+                password: { label: "Password", type: "password" },
             },
-            async authorize(Credentials:any):Promise<any> {
+            async authorize(credentials:any):Promise<any> {
+                if(!credentials.identifier){
+                    throw new Error('No credentials provided')
+                }
                 await connentDb()
-                console.log("username or password", Credentials.identifier.email,Credentials.identifier.username)
+                console.log("username or password", credentials.identifier, credentials.password)
+                
                 try {
                     const user = await UserModel.findOne({
                         $or:[
-                            {email: Credentials.identifier.email},
-                            {username: Credentials.identifier.username}
+                            {email: credentials.identifier},
+                            {username: credentials.identifier}
                         ]            
                     })
 
@@ -34,7 +38,7 @@ export const authOptions : NextAuthOptions = {
                     }
 
                     // check password 
-                    const isPasswordCorrect = await bcrypt.compare(Credentials.password, user.password)
+                    const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password)
 
                     // if password correct 
                     if(isPasswordCorrect){

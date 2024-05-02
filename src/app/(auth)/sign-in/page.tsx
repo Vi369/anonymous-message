@@ -20,33 +20,32 @@ function page() {
 
     const form = useForm<z.infer<typeof signInSchema>>({
         resolver: zodResolver(signInSchema),
-        defaultValues:{
-            identifire: '',
-            password: ''
-        }
     })
 
     // handle submit
     const onSubmitHandler = async(data: z.infer<typeof signInSchema>)=>{
         setIsFormSubmitting(true)
         try {
-            const responseSignIn = await signIn('Credentials', {
+            console.log(data.identifier)
+            console.log(data.password)
+            const responseSignIn = await signIn('credentials', {
                 redirect: false,
-                identifire: data.identifire,
-                password: data.password
+                identifier: data.identifier,
+                password: data.password,
             })
             // TODO: 
-            console.log("res sign in :", responseSignIn)
-    
+            console.log("res sign in :", responseSignIn?.error, responseSignIn?.ok, responseSignIn?.status, responseSignIn?.url)
+            console.log(responseSignIn)
             if(responseSignIn?.error){
                 toast({
                     description: "Incorrect username or passaword.Please check and try again",
                     variant: 'destructive'
                 })
             }
-    
+            console.log("hello")
+            
             if(responseSignIn?.url){
-                router.replace('/my-dashboard')
+                router.push('/my-dashboard')
             }
         } catch (error) {
             console.log("Error during sign in with auth:", error)
@@ -73,7 +72,7 @@ function page() {
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmitHandler)} className='space-y-5'>
                     <FormField
-                        name="identifire"
+                        name="identifier"
                         control={form.control}
                         render={({ field }) => (
                             <FormItem>
