@@ -43,7 +43,7 @@ function Dashboard() {
         setSwitchState(true)
         try {
             const response = await axios.get<ApiResponse>('/api/accept-message')
-            setValue('acceptMessages', response.data.isAccesptingMessages)
+            setValue('acceptMessages', response.data.isAcceptingMessages)
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>
             toast({
@@ -58,7 +58,7 @@ function Dashboard() {
     // get all messages
     const getAllMessages = useCallback(async(refresh:boolean = false)=>{
         setIsLoading(true)
-        setSwitchState(true)
+        setSwitchState(false)
         try {
             const response = await axios.get<ApiResponse>('/api/get-messages')
             setMessages(response.data.messages || []);
@@ -85,7 +85,7 @@ function Dashboard() {
             const response = await axios.post<ApiResponse>('/api/accept-message',{
                 acceptMessages: !acceptMessages
             })
-            setValue('acceptMessages', !acceptMessages)
+            setValue('acceptMessages', response.data.isAcceptingMessages)
             toast({
                 description: response.data.message
             })
@@ -124,12 +124,13 @@ function Dashboard() {
                 description: "Session Expire please login Again!"
             })
         }
+        checkingAcceptMessageStatus();
         getAllMessages();
-        checkingAcceptMessageStatus()
+        
 
     },[checkingAcceptMessageStatus, getAllMessages, session, setValue])
 
-    
+    console.log("accept message", acceptMessages)
 
     return(
         <div className='my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl'>
@@ -150,12 +151,12 @@ function Dashboard() {
              <div className='mb-2'>
                 <Switch 
                      {...register('acceptMessages')}
-                    checked={acceptMessages}
-                    onCheckedChange={handleSwitchChangeState}
-                    disabled={switchState}
+                     checked={acceptMessages}
+                     onCheckedChange={handleSwitchChangeState}
+                     disabled = {switchState}
                 />
                 <span className="ml-4">
-                 Accept Messages: {acceptMessages ? 'On' : 'Off'}
+                 Accept Messages: {acceptMessages? 'On':'Off'}
                 </span>
              </div>
              {/* seperator */}
