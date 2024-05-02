@@ -11,10 +11,7 @@ export async function GET(request:Request) {
     await connentDb()
 
     const session = await getServerSession(authOptions)
-    console.log("session:", session)
-// TODO: 
     const user:User = session?.user;
-    console.log("user jo session se liya hai:", session)
 
     if(!session || !session?.user){
         return Response.json( 
@@ -25,8 +22,6 @@ export async function GET(request:Request) {
 
     const userId = new mongoose.Types.ObjectId(user._id);
 
-    console.log("user id converted:", userId);
-
     try {
         const user = await UserModel.aggregate([
             {$match: {id: userId}},
@@ -35,21 +30,19 @@ export async function GET(request:Request) {
             {$group: {_id: '$_id', messages: {$push: '$messages'}}}
         ])
 
-        if(!user || user.length===0){
+        if(user.length===0){
             return Response.json(
-                new ResponseObj(false, "User not Found!"),
-                {status: 401}
+                new ResponseObj(false, "No Messages"),
+                {status: 400}
+            )
+        }else{
+            console.log("users", user)
+            console.log("messages", user[0].messages)
+            return Response.json(
+                new ResponseObj(true, "Messages Fetched successfully!",user[0].messages),
+                { status: 200 } 
             )
         }
-            console.log("messages", user[0].messages)
-        return Response.json(
-            // new ResponseObj(true, "Messages Fetched successfully!",user[0].messages),
-            {
-                messages:user[0].messages ,
-                success: true
-            },
-            { status: 200 } 
-            )
     } catch (error) {
         console.log("Error during fetched Messages:", error)
         return Response.json(
