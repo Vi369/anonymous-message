@@ -19,7 +19,7 @@ function SendMessage({params}:{params:{username:string}}) {
     const {toast}= useToast();
     const [checkIsAcceptMessagesOrNot, setCheckIsAcceptMessagesOrNot] = useState(false);
     const [isLoading, setIsLoading]= useState(false)
-    // const [messageContent, sentMessageContent] = useState('')
+    // const [message, sentMessageContent] = useState('')
 
     const form = useForm<z.infer<typeof MessageSchema>>({
         resolver: zodResolver(MessageSchema),
@@ -38,6 +38,7 @@ function SendMessage({params}:{params:{username:string}}) {
             //TODO: 
             if(response.data.isAcceptingMessages){
                 setCheckIsAcceptMessagesOrNot(true);
+
                 toast({
                     description: response.data?.message,
                 })
@@ -95,10 +96,15 @@ function SendMessage({params}:{params:{username:string}}) {
     // useEffect(()=>{
     //     checkUserAcceptMessage();
     // },[])
-
+    
   return (
     <div className='my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl'>
-            <h1 className="text-4xl font-bold mb-4">Public Profile Link</h1>
+            <h1 className="text-4xl font-bold mb-4 text-center">Public Profile Link</h1>
+            {/* TODO:  */}
+            <div className='mb-4 text-center'>
+            <h3>Accepting Messages</h3>
+            <Button className='w-15 h-10' onClick={checkUserAcceptMessage}>Check</Button>
+            </div>
              <div className='mb-4'>
                 <div className='flex flex-col items-center gap-5'>
                         <Form {...form}>
