@@ -62,7 +62,7 @@ function Dashboard() {
         setSwitchState(false)
         try {
             const response = await axios.get<ApiResponse>('/api/get-messages')
-            setMessages(response.data.messages || []);
+            setMessages(response.data.data || []);
             if(refresh){
                 toast({
                     description: "Showing latest messages wait.."
@@ -132,8 +132,6 @@ function Dashboard() {
 
     },[checkingAcceptMessageStatus, getAllMessages, session, setValue])
 
-    console.log("accept message", acceptMessages)
-
     return(
         <div className='my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl'>
             <h1 className="text-4xl font-bold mb-4">My Dashboard</h1>
@@ -182,7 +180,7 @@ function Dashboard() {
 
              {/* messages grid */}
              <div className='mt-6 grid grid-cols-1 md:grid-cols-2 gap-6'>
-                {messages.length >0 ?(messages.map((message,index)=>(
+                {messages.length > 0 ?(messages.map((message,index)=>(
                     <MessageCard 
                         key={message._id}
                         message={message}
