@@ -45,9 +45,7 @@ function MessageCard({message, onMessageDelete}:MessageCardProps) {
             <Card>
                 <CardHeader> 
                     {/* TODO: improve */}
-                    {/* <CardTitle>{message.content}</CardTitle> */}
-                    <CardDescription>Card Description</CardDescription>
-                    {/* alert dialog */}
+                    <CardTitle>{message.content}</CardTitle>
                     <AlertDialog>
                         <AlertDialogTrigger>
                             <Button variant={'destructive'}><X className='w-5 h-5'/></Button>
