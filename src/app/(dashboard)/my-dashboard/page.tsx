@@ -9,11 +9,12 @@ import { ApiResponse } from '@/types/ApiResponse'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import {Loader, RefreshCwIcon} from 'lucide-react'
 import MessageCard from '@/components/MessageCard'
+
+
 function Dashboard() {
     const [messages, setMessages] = useState<Message[]>([])
     const [isLoading, setIsLoading] = useState(false)
@@ -123,6 +124,7 @@ function Dashboard() {
             toast({
                 description: "Session Expire please login Again!"
             })
+            return
         }
         checkingAcceptMessageStatus();
         getAllMessages();
