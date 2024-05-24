@@ -3,17 +3,19 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast'
-import { Message } from '@/model/message.model';
-import { acceptMessageSchema } from '@/schemas/acceptMessageSchema';
 import { MessageSchema } from '@/schemas/messageSchema';
 import { ApiResponse } from '@/types/ApiResponse';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { AxiosError } from 'axios';
 import { Loader } from 'lucide-react';
-import { Content } from 'next/font/google';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import {useCompletion} from 'ai/react'
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import Link from 'next/link';
+import { Separator } from '@/components/ui/separator';
+
 
 function SendMessage({params}:{params:{username:string}}) {
     const {toast}= useToast();
@@ -25,6 +27,23 @@ function SendMessage({params}:{params:{username:string}}) {
         resolver: zodResolver(MessageSchema),
     })
 
+    const specialChar = '||';
+    const parseStringMessages = (messageString: string): string[] => {
+        return messageString.split(specialChar);
+    };
+
+    const initialMessageString = "What's your favorite movie?||Do you have any pets?||What's your dream job?";
+
+    // ai suggestion api
+    const {
+        complete,
+        completion,
+        isLoading: isSuggestLoading,
+        error,
+      } = useCompletion({
+        api: '/api/suggest-messages',
+        initialCompletion: initialMessageString,
+      });
 
     // watching 
     const messageContent = form.watch('content')
@@ -90,7 +109,22 @@ function SendMessage({params}:{params:{username:string}}) {
         }finally{
             setIsLoading(false)
         }
-    }
+    };
+
+    // handle message
+    const handleMessageClick = (message: string) => {
+        form.setValue('content', message);
+      };
+
+    // fetching suggest messages
+    const fetchSuggestedMessages = async () => {
+        try {
+          complete('');
+        } catch (error) {
+          console.error('Error fetching messages:', error);
+          // Handle error appropriately
+        }
+      };
 
     
     
@@ -103,8 +137,8 @@ function SendMessage({params}:{params:{username:string}}) {
             <h3>Accepting Messages</h3>
             <Button className='w-15 h-10' onClick={checkUserAcceptMessage}>Check</Button>
             </div>
-             <div className='mb-4'>
-                <div className='flex flex-col items-center gap-5'>
+             <div className='mb-4 flex justify-between'>
+                <div className='flex flex-col items-center gap-5 justify-center'>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmitSendMessage)} className='space-y-5'>
                             <FormField
@@ -130,19 +164,50 @@ function SendMessage({params}:{params:{username:string}}) {
                         </div>
                     </form>
                 </Form>
+                </div>
                 {/* ai suggetion part */}
                 <div className="space-y-4 my-8">
-                    <div className='space-y-2'>
-                        <Button 
-                            
-                            >
-
+                    <div className="space-y-2">
+                        <Button
+                            onClick={fetchSuggestedMessages}
+                            className="my-4"
+                            disabled={isSuggestLoading}
+                        >
+                            Suggest Messages
                         </Button>
-                    </div>
-                </div>
+                        <p>Click on any message below to select it.</p>
+                        </div>
 
-                </div>
+                        <Card>
+                            <CardHeader>
+                                <h3 className="text-xl font-semibold">Messages</h3>
+                            </CardHeader>
+                            <CardContent className="flex flex-col space-y-4">
+                                {error ? (
+                                <p className="text-red-500">{error.message}</p>
+                                ) : (
+                                parseStringMessages(completion).map((message, index) => (
+                                    <Button
+                                    key={index}
+                                    variant="outline"
+                                    className="mb-2"
+                                    onClick={() => handleMessageClick(message)}
+                                    >
+                                    {message}
+                                    </Button>
+                                ))
+                                )}
+                            </CardContent>
+                        </Card>
+                    </div>
              </div>
+             <Separator className="my-6" />
+                    <div className="text-center">
+                        <div className="mb-4">Get Your Message Board</div>
+                        <Link href={'/sign-up'}>
+                        <Button>Create Your Account</Button>
+                        </Link>
+                    </div>
         </div>
   )
 }
