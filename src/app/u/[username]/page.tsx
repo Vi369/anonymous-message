@@ -93,9 +93,7 @@ function SendMessage({params}:{params:{username:string}}) {
     }
 
     
-    // useEffect(()=>{
-    //     checkUserAcceptMessage();
-    // },[])
+    
     
   return (
     <div className='my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl'>
@@ -131,11 +129,18 @@ function SendMessage({params}:{params:{username:string}}) {
                                 )}
                         </div>
                     </form>
-                </Form>   
-                
-                
+                </Form>
+                {/* ai suggetion part */}
+                <div className="space-y-4 my-8">
+                    <div className='space-y-2'>
+                        <Button 
+                            
+                            >
 
-                
+                        </Button>
+                    </div>
+                </div>
+
                 </div>
              </div>
         </div>
