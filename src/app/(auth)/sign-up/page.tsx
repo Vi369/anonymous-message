@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button"
 import { Loader} from "lucide-react"
 
 
-function page() {
+function SignUp() {
     const [username, setUsername] = useState('')
     const [usernameMessage, setUsernameMessage] = useState('') 
     const [checkingUserNameUnique, setCheckingUserNameUnique] = useState(false) // loading state
@@ -179,4 +179,4 @@ function page() {
   )
 }
 
-export default page
+export default SignUp
