@@ -41,9 +41,11 @@ function SendMessage({params}:{params:{username:string}}) {
         isLoading: isSuggestLoading,
         error,
       } = useCompletion({
-        api: '/api/suggest-messages',
+        api: '/api/ai-message-suggestion',
         initialCompletion: initialMessageString,
       });
+
+      
 
     // watching 
     const messageContent = form.watch('content')
@@ -130,7 +132,7 @@ function SendMessage({params}:{params:{username:string}}) {
     
     
   return (
-    <div className='my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl'>
+    <div className='my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl h-[100vh]'>
             <h1 className="text-4xl font-bold mb-4 text-center">Public Profile Link</h1>
             {/* TODO:  */}
             <div className='mb-4 text-center'>
