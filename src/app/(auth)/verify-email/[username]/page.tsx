@@ -13,7 +13,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import * as z from 'zod'
 
-function verifyEmail() {
+function VerifyEmail() {
     const params = useParams();
     const router = useRouter();
     const [checkingVerify,setCheckingVerify] = useState(false);
@@ -108,4 +108,4 @@ function verifyEmail() {
     )
 }
 
-export default verifyEmail
+export default VerifyEmail
