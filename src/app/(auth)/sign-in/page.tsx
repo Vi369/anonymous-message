@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 
-function page() {
+function SignIn() {
     const [isFormSubmitting, setIsFormSubmitting] = useState(false);
     const { toast } = useToast()
     const router = useRouter()
@@ -116,4 +116,4 @@ function page() {
   )
 }
 
-export default page
+export default SignIn
