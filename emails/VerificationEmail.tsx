@@ -3,12 +3,10 @@ import {
     Head,
     Font,
     Body,
-    Preview,
     Heading,
     Row,
     Section,
     Text,
-    Button
 } from '@react-email/components'
 
 interface VerficationEmailProps{

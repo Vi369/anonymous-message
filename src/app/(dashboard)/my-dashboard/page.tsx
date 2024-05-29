@@ -128,7 +128,6 @@ function Dashboard() {
         }
         checkingAcceptMessageStatus();
         getAllMessages();
-        
 
     },[checkingAcceptMessageStatus, getAllMessages, session, setValue, toast])
 
